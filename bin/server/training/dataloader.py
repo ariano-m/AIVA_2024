@@ -4,9 +4,6 @@ class Dataloader:
     def __init__(self):
         super().__init__()
 
-    def _init(self):
-        pass
-
     def load_image(self):
         pass
 

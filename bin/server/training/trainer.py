@@ -2,9 +2,9 @@
 class Trainer:
     def __init__(self):
         super().__init__()
-        self.model = self.init()
+        self.model = self._init()
 
-    def init(self):
+    def _init(self):
         pass
 
     def compute_metrics(self, labels, predictions):

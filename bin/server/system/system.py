@@ -10,11 +10,11 @@ class MySystem:
     def detect_damage(self, image):
         pass
 
-    def place_figures(self, image):
+    def place_figures(self, image, coord_damage):
         pass
 
-    def color_figures(self, image):
+    def color_figures(self, image, coord):
         pass
 
-    def save_image(self, image):
+    def save_image(self, image, path):
         pass

@@ -3,7 +3,7 @@ def load_system():
     pass
 
 
-def process_petition():
+def process_petition(image):
     pass
 
 
