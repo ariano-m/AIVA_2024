@@ -1,11 +1,12 @@
+import javax.imageio.ImageIO;
 public class Controller {
 
-    public void sendPhoto() {
-
+    public ImageIO sendPhoto() {
+        return null;
     }
 
-    public void capturePhoto(){
-
+    public ImageIO capturePhoto(){
+        return null;
     }
 
     public void savePhoto() {
