@@ -1,7 +1,6 @@
-import glob
-
 import numpy as np
 import cv2 as cv
+import glob
 
 
 def read_yaml(file: str):
@@ -31,11 +30,17 @@ for idx, file in enumerate(files):
         lists_of_list = zip(*lists_of_list)
         for i in lists_of_list:
             i = list(i)
-            i[0] = i[0] + int(i[2] / 2)
-            i[1] = i[1] + int(i[3] / 2)
+            i[0] = (i[0] + int(i[2] / 2)) / 488
+            i[1] = (i[1] + int(i[3] / 2)) / 422
+            i[2] = i[2] / 488
+            i[3] = i[3] / 422
             string_list = [str(num) for num in i]
             msg += "0 " + ' '.join(map(str, string_list)) + "\n"
     else:
+        data[0] = (data[0] + int(data[2] / 2)) / 488
+        data[1] = (data[1] + int(data[3] / 2)) / 422
+        data[2] = data[2] / 488
+        data[3] = data[3] / 422
         msg += "0 " + ' '.join(map(str, data)) + "\n"
 
     file = file.split("/")[-1]
@@ -43,9 +48,3 @@ for idx, file in enumerate(files):
 
     with open(f'./MuestrasMaderas/{file}', 'w') as file:
         file.write(msg)
-
-
-
-
-
-
