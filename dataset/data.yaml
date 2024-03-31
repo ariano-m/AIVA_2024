@@ -1,0 +1,7 @@
+train: 'C:\Users\eilee\OneDrive - Universidad Rey Juan Carlos\Universidad\Aplicaciones Industriales Y Comerciales\AIVA_2024_MADERAS\dataset\splits\train'
+val: 'C:\Users\eilee\OneDrive - Universidad Rey Juan Carlos\Universidad\Aplicaciones Industriales Y Comerciales\AIVA_2024_MADERAS\dataset\splits\dev'
+test: 'C:\Users\eilee\OneDrive - Universidad Rey Juan Carlos\Universidad\Aplicaciones Industriales Y Comerciales\AIVA_2024_MADERAS\dataset\splits\test'
+
+# class names
+names:
+  0: inperfection
