@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
 from ultralytics import YOLO
 import numpy as np
+import torch
 import cv2
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class Model:
     def __init__(self):
@@ -17,6 +19,7 @@ class Model:
         :return: None
         """
         self.model = YOLO(path)
+        self.model = self.model.to(device)
 
     def predict(self, image: np.ndarray):
         """
@@ -27,13 +30,18 @@ class Model:
         """
         results = self.model.predict(image)
         for i in results:
+            print("i.boxes", i.boxes)
             box = i.boxes.xyxy
             print(box)
             if box.size != 0:
-                img = cv2.rectangle(image, (box[0], box[1]), (box[2], box[3]), (255, 0, 0), 2)
-                plt.imshow(img)
-                plt.axis('off')
-                plt.show()
+                defects = box.tolist()
+                for x1,y1,x2,y2 in defects:
+                  image = cv2.rectangle(image, (int(x1), int(y1)),
+                                        (int(x2), int(y2)),
+                                        (255, 0, 0), 2)
+                  plt.imshow(image)
+                  plt.axis('off')
+                  plt.savefig('./prediction.png')
 
     def define_model(self) -> YOLO:
         """
@@ -41,4 +49,5 @@ class Model:
 
         :return: YOLO, Initialized YOLO model.
         """
-        return YOLO('yolov8n.pt')  # sin pesos 'yolov8n.yaml' con pesos 'yolov8n.pt'
+        yolo = YOLO('yolov8n.yaml')  # sin pesos 'yolov8n.yaml' con pesos 'yolov8n.pt'
+        return yolo.to(device)

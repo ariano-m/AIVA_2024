@@ -77,9 +77,8 @@ class Trainer:
         :return: None
         """
         img = cv2.imread(path)
-        plt.imshow(img)
         plt.axis('off')
-        plt.show()
+        plt.imshow(img)
 
 
 def main():
