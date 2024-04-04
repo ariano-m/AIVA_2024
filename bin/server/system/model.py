@@ -1,10 +1,17 @@
-import matplotlib.pyplot as plt
 from ultralytics import YOLO
 import numpy as np
 import torch
 import cv2
 
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
+if torch.backends.mps.is_available():
+    device = "mps"
+elif torch.cuda.is_available():
+    device = "cuda"
+else:
+    device = "cpu"
+
+print("MODEL RUNNING ON:", device)
+
 
 class Model:
     def __init__(self):
@@ -29,19 +36,29 @@ class Model:
         :return: None
         """
         results = self.model.predict(image)
+        contours = []
         for i in results:
-            print("i.boxes", i.boxes)
             box = i.boxes.xyxy
-            print(box)
             if box.size != 0:
-                defects = box.tolist()
-                for x1,y1,x2,y2 in defects:
-                  image = cv2.rectangle(image, (int(x1), int(y1)),
-                                        (int(x2), int(y2)),
-                                        (255, 0, 0), 2)
-                  plt.imshow(image)
-                  plt.axis('off')
-                  plt.savefig('./prediction.png')
+                defects = box
+                for x1, y1, x2, y2 in defects:
+                    cnt = (int(x1), int(y1 - 10), int(x2), int(y2 - 10))
+                    contours.append(cnt)
+
+        if not contours:
+            contours = self.prediction_without_nn(image)
+
+        return contours
+    def prediction_without_nn(self, image: np.ndarray):
+        kernel = np.ones((5, 5), np.uint8)
+        im_bin = cv2.erode(image[:, :, 0], kernel, iterations=3)
+        contours, hierarchy = cv2.findContours(im_bin, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours = sorted(contours, key=cv2.contourArea)[:-1]  # rm the global bbox
+        bboxes = []
+        for cnt in contours:
+            x, y, w, h = cv2.boundingRect(cnt)
+            bboxes.append((x, y, x + w, y + h))
+        return bboxes
 
     def define_model(self) -> YOLO:
         """
@@ -49,5 +66,5 @@ class Model:
 
         :return: YOLO, Initialized YOLO model.
         """
-        yolo = YOLO('yolov8n.yaml')  # sin pesos 'yolov8n.yaml' con pesos 'yolov8n.pt'
+        yolo = YOLO('yolov8.yaml')  # sin pesos 'yolov8n.yaml' con pesos 'yolov8n.pt'
         return yolo.to(device)

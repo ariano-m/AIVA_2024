@@ -1,5 +1,8 @@
+import copy
+
 import matplotlib.pyplot as plt
 from ultralytics import YOLO
+import numpy as np
 import cv2
 import sys
 
@@ -82,13 +85,13 @@ class Trainer:
 
 
 def main():
-    save_path = './my_train'
+    save_path = '../models/'
     save_val = './my_val'
-    name = 'Yolo_Training'
+    name = 'Yolo_Training2'
 
     trainer = Trainer()
     model_ = Model()
-    trainer.train(model_.model, '../../../dataset/data.yaml', 1, 8, 512, name, save_path)
+    trainer.train(model_.model, '../../../dataset/data.yaml', 300, 64, 512, name, save_path)
     print("Training finished!")
 
     model_._load_model(f'{save_path}/{name}/weights/best.pt')
@@ -97,8 +100,19 @@ def main():
     trainer.save_model(model_.model, 'torchscript', name, save_path)
     trainer.plot_loss(f'{save_path}/{name}/results.png')
 
-    img = cv2.imread('../../../dataset/MuestrasMaderas/26.png')
-    model_.predict(img)
+    img = cv2.imread('../../../dataset/MuestrasMaderas/06.png')
+    rgb = copy.deepcopy(img)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    th, im_bin = cv2.threshold(img, 128, 192, cv2.THRESH_OTSU)
+    im_bin = im_bin[:, :, np.newaxis]
+    im_bin = np.repeat(im_bin, 3, axis=2)
+    contours = model_.predict(im_bin)
+    for x1, y1, x2, y2 in contours:
+        rgb = cv2.rectangle(rgb, (int(x1), int(y1)),
+                              (int(x2), int(y2)),
+                              (255, 0, 0), 2)
+    cv2.imshow("", rgb)
+    cv2.waitKey(0)
 
 
 if __name__ == "__main__":
