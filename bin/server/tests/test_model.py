@@ -1,5 +1,5 @@
-from keras import Model as KerasModel
 from unittest import TestCase
+from ultralytics import YOLO
 import cv2 as cv
 import sys
 import os
@@ -13,7 +13,7 @@ class test_model(TestCase):
     image = cv.imread("./images/49.png")
 
     def test_load_model(self):
-        self.assertTrue(isinstance(self.model._load_model(), KerasModel))
+        self.assertTrue(isinstance(self.model._load_model(), YOLO))  # Ya no devuelve un modelo
 
     def test_predict(self):
         coords = self.model.predict(self.image)

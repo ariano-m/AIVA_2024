@@ -1,5 +1,4 @@
 import copy
-
 import matplotlib.pyplot as plt
 from ultralytics import YOLO
 import numpy as np
@@ -101,12 +100,14 @@ def main():
     trainer.plot_loss(f'{save_path}/{name}/results.png')
 
     img = cv2.imread('../../../dataset/MuestrasMaderas/06.png')
+
     rgb = copy.deepcopy(img)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     th, im_bin = cv2.threshold(img, 128, 192, cv2.THRESH_OTSU)
     im_bin = im_bin[:, :, np.newaxis]
     im_bin = np.repeat(im_bin, 3, axis=2)
-    contours = model_.predict(im_bin)
+
+    contours = model_.inference(im_bin)
     for x1, y1, x2, y2 in contours:
         rgb = cv2.rectangle(rgb, (int(x1), int(y1)),
                               (int(x2), int(y2)),

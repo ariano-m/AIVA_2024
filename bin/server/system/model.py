@@ -28,7 +28,7 @@ class Model:
         self.model = YOLO(path)
         self.model = self.model.to(device)
 
-    def predict(self, image: np.ndarray):
+    def inference(self, image: np.ndarray):
         """
         Predict the bounding box of the given image
 
@@ -49,11 +49,11 @@ class Model:
             contours = self.prediction_without_nn(image)
 
         return contours
-    def prediction_without_nn(self, image: np.ndarray):
+    def prediction_without_nn(self, image: np.ndarray) -> list:
         kernel = np.ones((5, 5), np.uint8)
         im_bin = cv2.erode(image[:, :, 0], kernel, iterations=3)
         contours, hierarchy = cv2.findContours(im_bin, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        contours = sorted(contours, key=cv2.contourArea)[:-1]  # rm the global bbox
+        contours = sorted(contours, key=cv2.contourArea)[:-1]
         bboxes = []
         for cnt in contours:
             x, y, w, h = cv2.boundingRect(cnt)
@@ -66,5 +66,5 @@ class Model:
 
         :return: YOLO, Initialized YOLO model.
         """
-        yolo = YOLO('yolov8.yaml')  # sin pesos 'yolov8n.yaml' con pesos 'yolov8n.pt'
+        yolo = YOLO('yolov8.yaml')  # sin pesos 'yolov8.yaml' con pesos 'yolov8n.pt'
         return yolo.to(device)
