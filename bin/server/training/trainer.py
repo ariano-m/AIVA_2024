@@ -16,7 +16,7 @@ class Trainer:
         """
         super().__init__()
 
-    def train(self, model: YOLO, data: str, epochs: int, batch: int, size: int, name: str, path: str):
+    def train(self, model: YOLO, data: str, epochs: int, batch: int, size: int, name: str, path: str) -> None:
         """
         Train the specified YOLO model.
 
@@ -43,7 +43,7 @@ class Trainer:
                 key = key[len('metrics/'):]
             print(f"{key}: {value:.6f}")
 
-    def evaluate(self, model: YOLO, name: str, path: str):
+    def evaluate(self, model: YOLO, name: str, path: str) -> None:
         """
         Evaluates the trained YOLO model.
 
@@ -59,7 +59,7 @@ class Trainer:
                 key = key[len('metrics/'):]
             print(f"{key}: {value:.6f}")
 
-    def save_model(self, model: YOLO, format: str, name: str, path: str):
+    def save_model(self, model: YOLO, format: str, name: str, path: str) -> None:
         """
         Saves the trained YOLO model in the specified format.
 
@@ -71,7 +71,7 @@ class Trainer:
         """
         model.export(format=format, name=name, project=path)
 
-    def plot_loss(self, path: str):
+    def plot_loss(self, path: str) -> None:
         """
         Plot the loss curve.
 

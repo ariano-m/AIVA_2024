@@ -18,7 +18,7 @@ class Model:
         super().__init__()
         self.model = self.define_model()
 
-    def _load_model(self, path: str):
+    def _load_model(self, path: str) -> None:
         """
         Load a YOLO model from the specified path.
 
@@ -28,7 +28,7 @@ class Model:
         self.model = YOLO(path)
         self.model = self.model.to(device)
 
-    def inference(self, image: np.ndarray):
+    def inference(self, image: np.ndarray) -> list:
         """
         Predict the bounding box of the given image
 

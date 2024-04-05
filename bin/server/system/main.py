@@ -3,7 +3,7 @@ def load_system():
     pass
 
 
-def process_petition(image):
+def process_petition(image: np.ndarray) -> None:
     pass
 
 

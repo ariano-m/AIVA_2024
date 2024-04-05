@@ -89,7 +89,7 @@ class MySystem:
 
         return bbox_l
 
-    def color_figures(self, image: np.ndarray, coord: list):
+    def color_figures(self, image: np.ndarray, coord: list) -> np.ndarray:
         """
             Colors the placed figures on the input image.
 
@@ -113,11 +113,10 @@ class MySystem:
                                  (bbox_triangle[2], bbox_triangle[1])])
         image = cv2.drawContours(image, [triangle_cnt], 0, (0, 255, 0), -1)
 
-        cv2.imshow("place_figures", image)
-        cv2.waitKey(0)
-        pass
+        return image
 
-    def save_image(self, image: np.ndarray, path: str):
+
+    def save_image(self, image: np.ndarray, path: str) -> None:
         """
             Function for saving an image in a given path
         :param image: nd.ndarray, image to be saved
