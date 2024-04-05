@@ -64,7 +64,7 @@ class MySystem:
         def search(table, shape, flag):
             height, width = table.shape
             for y in range(height):
-                for x in range(0, width, 100):
+                for x in range(0, width - shape[0], 100):
                     y2 = y + shape[1]
                     x2 = x + shape[0]
 
