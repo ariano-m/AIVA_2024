@@ -36,11 +36,10 @@ def main():
     cv2.waitKey(0)
 
     my_image = MyImage()
-    my_image.user = ""
+    my_image.user = "@user"
     my_image.original_image = img
     my_image.bbox_imperfections = bbox_defects
     my_image.bbox_margins = bbox_board
-    my_image.user = "@user"
     my_image.datatime_ = datetime.datetime.now()
     processed_images_l.append(my_image)
 
