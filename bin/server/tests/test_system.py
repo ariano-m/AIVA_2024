@@ -1,17 +1,21 @@
-from unittest import TestCase
 import numpy as np
 import cv2 as cv
+import unittest
 import sys
 import os
 
 sys.path.append('../')
-from system.model import System
+from system.system import MySystem
 from system.model import Model
 
 
-class test_system(TestCase):
-    model = Model("./model/")
-    my_system = System(model)
+class test_system(unittest.TestCase):
+    save_path = '../models/'
+    name = 'Yolo_Training2'
+    model = Model()
+    model._load_model(f'{save_path}/{name}/weights/best.pt')
+
+    my_system = MySystem(model)
     image = cv.imread("./images/49.png")
     path = './output.png'
 
@@ -28,12 +32,17 @@ class test_system(TestCase):
         self.assertTrue(0 <= y + h < self.image.shape[1])
 
     def test_preprocess_image(self):
-        self.assertEqual(self.my_system.preprocess_image(self.image).size(), (488, 442))
+        self.assertEqual(self.my_system.preprocess_image(self.image).shape, (442, 488, 3))
 
     def test_detect_damage(self):
         coords = self.my_system.detect_damage(self.image)
         self.assertTrue(isinstance(coords, list))
-        self.assertEquals(len(coords) % 2, 0)
+
+        for x, y, x2, y2 in coords:
+            self.assertTrue(0 <= x < self.image.shape[0])
+            self.assertTrue(0 <= y < self.image.shape[1])
+            self.assertTrue(0 <= x2 < self.image.shape[0])
+            self.assertTrue(0 <= y2 < self.image.shape[1])
 
     def test_place_figures(self):
         img_bin = self.my_system.preprocess_image(self.image)
@@ -64,3 +73,7 @@ class test_system(TestCase):
     #     self.assertTrue(os.path.exists(self.path))
     #     with self.assertRaises(TypeError):
     #          self.my_system.save_image(self.image, self.path)
+
+
+if __name__ == '__main__':
+    unittest.main()
