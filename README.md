@@ -56,3 +56,17 @@ En Windows, ejecuta:
 ```
 set PYTHONPATH=%PYTHONPATH%;C:\My_python_lib
 ```
+
+### Lanzar programa
+Primero se ha de estar en la carpeta del proyecto donde se situa main.py. Esta se encuentra en AIVA_2024_MADERAS/bin/server/system/main.py.
+```
+cd bin/server/system/
+```
+El comando para ejecutar el sistema y que este nos devuelva una imagen con las piezas colocadas sería el siguiente:
+```
+python.exe main.py --img_path <ruta de la imagen>
+```
+Un ejemplo:
+```
+python.exe main.py --img_path ../../../dataset/MuestrasMaderas/10.png
+```
