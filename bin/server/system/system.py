@@ -52,15 +52,16 @@ class MySystem:
         img_bin = self.preprocess_image(image)
         return self.model.inference(img_bin)
 
-    def place_figures(self, image, bbox_damages, black_bbox) -> list:
+    def place_figures(self, image: np.ndarray, bbox_damages: list, black_bbox: cv2.typing.Rect) -> list:
         """
             Places figures on the input image while avoiding damaged areas.
 
-        :param image: The input image.
-        :param bbox_damages: Bounding boxes of damaged areas.
-        :param black_bbox: Bounding box of the black area.
+        :param image: np.ndarray, The input image.
+        :param bbox_damages: list, Bounding boxes of damaged areas.
+        :param black_bbox: list, Bounding box of the black area.
         :return: A list of bounding boxes of placed figures.
         """
+
         def search(table, shape, flag):
             height, width = table.shape
             for y in range(height):
@@ -114,7 +115,6 @@ class MySystem:
         image = cv2.drawContours(image, [triangle_cnt], 0, (0, 255, 0), -1)
 
         return image
-
 
     def save_image(self, image: np.ndarray, path: str) -> None:
         """
