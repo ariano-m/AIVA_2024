@@ -40,7 +40,7 @@ def main():
     my_image.original_image = img
     my_image.bbox_imperfections = bbox_defects
     my_image.bbox_margins = bbox_board
-    my_image.datatime_ = datetime.datetime.now()
+    my_image.datatime = datetime.datetime.now()
     processed_images_l.append(my_image)
 
 
