@@ -3,6 +3,7 @@ from model import Model
 from image import MyImage
 import numpy as np
 import datetime
+import argparse
 import cv2
 
 processed_images_l = []
@@ -17,13 +18,19 @@ def process_petition(image: np.ndarray) -> None:
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--img_path', type=str, default='../../../dataset/MuestrasMaderas/10.png')
+
+    args = parser.parse_args()
+    img_path = args.img_path
+
     save_path = '../models/'
     name = 'Yolo_Training2'
     model_ = Model()
     model_.load_model(f'{save_path}/{name}/weights/best.pt')
 
     my_system = MySystem(model_)
-    img = cv2.imread('../../../dataset/MuestrasMaderas/10.png')
+    img = cv2.imread(img_path)
     img_bin = my_system.preprocess_image(img)
     erode_img = my_system.morphology(img_bin)
     bbox_board = my_system.get_contours(erode_img)
