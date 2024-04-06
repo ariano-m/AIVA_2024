@@ -1,3 +1,4 @@
+import numpy as np
 
 
 class MyImage:
@@ -7,15 +8,15 @@ class MyImage:
         self.bbox_imperfections = []
         self.bbox_margins = []
         self.user = ""
-        self.datetime_ = ""
+        self.datetime_ = 0.0
 
     @property
     def original_image(self):
         return self.original_image
 
     @original_image.setter
-    def original_image(self, value):
-        self._original_image = value
+    def original_image(self, img: np.ndarray):
+        self._original_image = img
 
     @property
     def bbox_imperfections(self):
@@ -29,25 +30,17 @@ class MyImage:
     def bbox_margins(self):
         return self.bbox_margins
 
-    @bbox_imperfections.setter
+    @bbox_margins.setter
     def bbox_margins(self, bbox_l: list):
         self.bbox_margins = bbox_l
 
     @property
     def user(self):
-        return self.bbox_margins
+        return self.user
 
     @user.setter
     def user(self, username: str):
         self.user = username
-
-    @property
-    def bbox_margins(self):
-        self._bbox_margins
-
-    @bbox_margins.setter
-    def bbox_margins(self, value: list):
-        self._bbox_margins = value
 
     @property
     def datetime_(self):
