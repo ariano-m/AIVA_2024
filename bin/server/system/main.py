@@ -20,7 +20,7 @@ def main():
     save_path = '../models/'
     name = 'Yolo_Training2'
     model_ = Model()
-    model_._load_model(f'{save_path}/{name}/weights/best.pt')
+    model_.load_model(f'{save_path}/{name}/weights/best.pt')
 
     my_system = MySystem(model_)
     img = cv2.imread('../../../dataset/MuestrasMaderas/06.png')

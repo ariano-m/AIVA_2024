@@ -18,7 +18,7 @@ class Model:
         super().__init__()
         self.model = self.define_model()
 
-    def _load_model(self, path: str) -> None:
+    def load_model(self, path: str) -> None:
         """
         Load a YOLO model from the specified path.
 
@@ -46,10 +46,10 @@ class Model:
                     contours.append(cnt)
 
         if not contours:
-            contours = self.prediction_without_nn(image)
+            contours = self._processing_image(image)
 
         return contours
-    def prediction_without_nn(self, image: np.ndarray) -> list:
+    def _processing_image(self, image: np.ndarray) -> list:
         kernel = np.ones((5, 5), np.uint8)
         im_bin = cv2.erode(image[:, :, 0], kernel, iterations=3)
         contours, hierarchy = cv2.findContours(im_bin, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)

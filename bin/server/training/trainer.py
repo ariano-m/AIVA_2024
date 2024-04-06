@@ -93,7 +93,7 @@ def main():
     trainer.train(model_.model, '../../../dataset/data.yaml', 300, 64, 512, name, save_path)
     print("Training finished!")
 
-    model_._load_model(f'{save_path}/{name}/weights/best.pt')
+    model_.load_model(f'{save_path}/{name}/weights/best.pt')
 
     trainer.evaluate(model_.model, name, save_val)
     trainer.save_model(model_.model, 'torchscript', name, save_path)

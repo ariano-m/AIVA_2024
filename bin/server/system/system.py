@@ -6,9 +6,9 @@ class MySystem:
     def __init__(self, model):
         super().__init__()
         self.model = model
-        self.triangle_size = (125, 125)
-        self.rectangle_size = (150, 70)
-        self.circle_size = (90, 90)
+        self._triangle_shape = (125, 125)
+        self._rectangle_shape = (150, 70)
+        self._circle_size = (90, 90)
 
     def morphology(self, image: np.ndarray) -> np.ndarray:
         """
@@ -84,7 +84,7 @@ class MySystem:
             # image = cv2.rectangle(image, (x1, y1), (x2, y2), (100,100,0), thickness=4)
 
         bbox_l = []
-        for idx, size in enumerate([self.triangle_size, self.rectangle_size, self.circle_size]):
+        for idx, size in enumerate([self._triangle_shape, self._rectangle_shape, self._circle_size]):
             bbox = search(matrix, size, idx + 1)
             bbox_l.append(bbox)
 
@@ -107,7 +107,7 @@ class MySystem:
                               colors[0], thickness=cv2.FILLED)
 
         x, y = (bbox_circle[0] + bbox_circle[2]) // 2, (bbox_circle[1] + bbox_circle[3]) // 2
-        image = cv2.circle(image, (x, y), self.circle_size[0] // 2, colors[2], thickness=cv2.FILLED)
+        image = cv2.circle(image, (x, y), self._circle_size[0] // 2, colors[2], thickness=cv2.FILLED)
 
         triangle_cnt = np.array([(bbox_triangle[0], bbox_triangle[3]),
                                  (bbox_triangle[2], bbox_triangle[3]),
