@@ -58,15 +58,32 @@ set PYTHONPATH=%PYTHONPATH%;C:\My_python_lib
 ```
 
 ### Lanzar programa
-Primero se ha de estar en la carpeta del proyecto donde se situa main.py. Esta se encuentra en AIVA_2024_MADERAS/bin/server/system/main.py.
+Primero se ha de estar en la carpeta del proyecto donde se situa main.py. 
+
+Esta se encuentra en _AIVA_2024_MADERAS/bin/server/system/main.py_.
 ```
 cd bin/server/system/
 ```
 El comando para ejecutar el sistema y que este nos devuelva una imagen con las piezas colocadas sería el siguiente:
 ```
-python.exe main.py --img_path <ruta de la imagen>
+python.exe <ruta donde se encuentra el main.py> --img_path <ruta de la imagen>
 ```
-Un ejemplo:
+Un ejemplo, si nos encontramos en la carpeta _system_:
 ```
 python.exe main.py --img_path ../../../dataset/MuestrasMaderas/10.png
+```
+
+### Lanzar test
+Al igual que la anterior vez, se ha de ir a la carpeta donde se encuentran los test.
+En este caso es _AIVA_2024_MADERAS/bin/server/tests_.
+```
+cd bin/server/tests
+```
+El comando para ejecutar el test sería el siguiente:
+```
+python.exe <ruta donde se encuentra el test.py> --img_path <ruta de la imagen>
+```
+Un ejemplo, si nos encontramos en la carpeta _system_:
+```
+python.exe test_system.py --img_path ../../../dataset/MuestrasMaderas/10.png
 ```
