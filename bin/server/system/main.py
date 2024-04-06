@@ -1,7 +1,13 @@
-import cv2
-import numpy as np
 from system import MySystem
 from model import Model
+from image import MyImage
+import numpy as np
+import datetime
+import cv2
+
+processed_images_l = []
+
+
 def load_system() -> None:
     pass
 
@@ -26,8 +32,18 @@ def main():
     bbox_figures = my_system.place_figures(img, bbox_defects, bbox_board)
     image = my_system.color_figures(img, bbox_figures)
 
-    cv2.imshow("Figure",image)
+    cv2.imshow("Figure", image)
     cv2.waitKey(0)
+
+    my_image = MyImage()
+    my_image.user = ""
+    my_image.original_image = img
+    my_image.bbox_imperfections = bbox_defects
+    my_image.bbox_margins = bbox_board
+    my_image.user = "@user"
+    my_image.datatime_ = datetime.datetime.now()
+    processed_images_l.append(my_image)
+
 
 if __name__ == "__main__":
     main()
