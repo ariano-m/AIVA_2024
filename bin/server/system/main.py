@@ -23,7 +23,7 @@ def main():
     model_.load_model(f'{save_path}/{name}/weights/best.pt')
 
     my_system = MySystem(model_)
-    img = cv2.imread('../../../dataset/MuestrasMaderas/06.png')
+    img = cv2.imread('../../../dataset/MuestrasMaderas/10.png')
     img_bin = my_system.preprocess_image(img)
     erode_img = my_system.morphology(img_bin)
     bbox_board = my_system.get_contours(erode_img)
@@ -35,7 +35,7 @@ def main():
     cv2.imshow("Figure", image)
     cv2.waitKey(0)
 
-    my_image = MyImage()
+    my_image = MyImage(img)
     my_image.user = "@user"
     my_image.original_image = img
     my_image.bbox_imperfections = bbox_defects
