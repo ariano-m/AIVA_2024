@@ -13,7 +13,7 @@ class test_system(unittest.TestCase):
     save_path = '../models/'
     name = 'Yolo_Training2'
     model = Model()
-    model._load_model(f'{save_path}/{name}/weights/best.pt')
+    model.load_model(f'{save_path}/{name}/weights/best.pt')
 
     my_system = MySystem(model)
     image = cv.imread("./images/49.png")
