@@ -6,7 +6,7 @@ Desarrolladores de VisionaryAI:
 
 ## Índice
 1. [Introducción](#id1)
-2. [Base de datos](#id2)
+2. [Dataset](#id2)
 3. [Despliegue](#id3)
 
 
