@@ -20,14 +20,21 @@ El sistema desarrollado para resolver esta necesidad se conoce como **ToyWoodVis
 ## Base de datos <a name="id2"></a>
 La base de datos proporcionada por el cliente es una recopilación de 79 imágenes de tablones de madera sobre fondo negro. Aunque la iluminación parece constante, hay un cierto número de imágenes que presentan una tonalidad de madera más oscura.
 
-![](https://github.com/ariano-m/AIVA_2024_MADERAS/blob/main/dataset/MuestrasMaderas/36.png)
-![](https://github.com/ariano-m/AIVA_2024_MADERAS/blob/main/dataset/MuestrasMaderas/37.png)
+
+Imagen 36             |  Imagen 37
+:-------------------------:|:-------------------------:
+![](https://github.com/ariano-m/AIVA_2024_MADERAS/blob/main/dataset/MuestrasMaderas/25.png) | ![](https://github.com/ariano-m/AIVA_2024_MADERAS/blob/main/dataset/MuestrasMaderas/37.png)
 
 Parte de la solución a implementar consiste en detectar los nodos o grietas que pueda presentar la madera.
 - Los nodos se definen como el área de tejido leñoso resultante de la huella dejada por el desarrollo de una rama.
 - Las grietas son la separación de las fibras (corte o hendidura) en dirección longitudinal.
 
-![](https://github.com/ariano-m/AIVA_2024_MADERAS/blob/main/dataset/MuestrasMaderas/25.png)
+A continuación, se muestra un ejemplo del objetivo:
+<div align="center">
+    <img src="https://github.com/ariano-m/AIVA_2024_MADERAS/assets/35432675/1adf935e-fe37-48d6-a50c-75f8982ac808" width="450">
+   <div>Imagen dilatada</div>
+</div> 
+
 
 ## Despliegue <a name="id3"></a>
 ### Requisitos
@@ -74,41 +81,39 @@ set PYTHONPATH=%PYTHONPATH%;C:\My_python_lib
 ```
 
 ### Lanzar programa
-Primero se ha de estar en la carpeta del proyecto donde se situa main.py. 
-
-Esta se encuentra en _AIVA_2024_MADERAS/bin/server/system/main.py_.
+Primero se ha de estar en la carpeta del proyecto donde se situa main.py. En este caso, se encuentra en _AIVA_2024_MADERAS/bin/server/system/main.py_.
 ```
 cd bin/server/system/
 ```
 El comando para ejecutar el sistema y que este nos devuelva una imagen con las piezas colocadas sería el siguiente:
 ```
-python.exe <ruta donde se encuentra el main.py> --img_path <ruta de la imagen>
+python <ruta donde se encuentra el main.py> --img_path <ruta de la imagen>
 ```
 Un ejemplo, si nos encontramos en la carpeta _system_:
 ```
-python.exe main.py --img_path ../../../dataset/MuestrasMaderas/10.png
+python main.py --img_path ../../../dataset/MuestrasMaderas/10.png
 ```
 
 ### Lanzar test
-Al igual que la anterior vez, se ha de ir a la carpeta donde se encuentran los test.
-En este caso es _AIVA_2024_MADERAS/bin/server/tests_.
+Al igual que la anterior vez, se ha de ir a la carpeta donde se encuentran los test. En este caso es _AIVA_2024_MADERAS/bin/server/tests_.
 ```
 cd bin/server/tests
 ```
 El comando para ejecutar el test sería el siguiente:
 ```
-python.exe <ruta donde se encuentra el test.py> <ruta del modelo (opcional)> <ruta de la imagen (opcional)>
+python <ruta donde se encuentra el test.py> <ruta del modelo (opcional)> <ruta de la imagen (opcional)>
 ```
-Un ejemplo, si nos encontramos en la carpeta _system_:
-Para el test_system:
+A continuación, se muestra un ejemplo de ejecución para casa test.
+
+**test_system**:
 ```
-python.exe test_system.py ../../../dataset/MuestrasMaderas/10.png
+python test_system.py ../../../dataset/MuestrasMaderas/10.png
 ```
-Para el test_model:
+**test_model**:
 ```
 python test_model.py ../models/Yolo_Training2/weights/best.pt ../../../dataset/MuestrasMaderas/62.png
 ````
-Para el test_trainer:
+**test_trainer**:
 ```
 python test_trainer.py ../models/Yolo_Training2/weights/best.pt
 ```
