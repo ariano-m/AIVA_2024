@@ -17,7 +17,7 @@ Uno de los requerimientos del cliente se trata de que el sistema trabaje sobre u
 
 El sistema desarrollado para resolver esta necesidad se conoce como **ToyWoodVision** y se encargará de su implementación la compañía **VisionaryAI**.
 
-## Base de datos <a name="id2"></a>
+## Dataset <a name="id2"></a>
 La base de datos proporcionada por el cliente es una recopilación de 79 imágenes de tablones de madera sobre fondo negro. Aunque la iluminación parece constante, hay un cierto número de imágenes que presentan una tonalidad de madera más oscura.
 
 
