@@ -6,7 +6,8 @@ Desarrolladores de VisionaryAI:
 
 ## Índice
 1. [Introducción](#id1)
-2. [Despliegue](#id2)
+2. [Base de datos](#id2)
+3. [Despliegue](#id3)
 
 
 ## Introducción <a name="id1"></a>
@@ -16,7 +17,19 @@ Uno de los requerimientos del cliente se trata de que el sistema trabaje sobre u
 
 El sistema desarrollado para resolver esta necesidad se conoce como **ToyWoodVision** y se encargará de su implementación la compañía **VisionaryAI**.
 
-## Despliegue <a name="id2"></a>
+## Base de datos <a name="id2"></a>
+La base de datos proporcionada por el cliente es una recopilación de 79 imágenes de tablones de madera sobre fondo negro. Aunque la iluminación parece constante, hay un cierto número de imágenes que presentan una tonalidad de madera más oscura.
+
+![](https://github.com/ariano-m/AIVA_2024_MADERAS/blob/main/dataset/MuestrasMaderas/36.png)
+![](https://github.com/ariano-m/AIVA_2024_MADERAS/blob/main/dataset/MuestrasMaderas/37.png)
+
+Parte de la solución a implementar consiste en detectar los nodos o grietas que pueda presentar la madera.
+- Los nodos se definen como el área de tejido leñoso resultante de la huella dejada por el desarrollo de una rama.
+- Las grietas son la separación de las fibras (corte o hendidura) en dirección longitudinal.
+
+![](https://github.com/ariano-m/AIVA_2024_MADERAS/blob/main/dataset/MuestrasMaderas/25.png)
+
+## Despliegue <a name="id3"></a>
 ### Preparación del entorno
 ```
 git clone https://github.com/ariano-m/AIVA_2024_MADERAS.git
