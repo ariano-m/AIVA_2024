@@ -77,13 +77,6 @@ class TestSystem(unittest.TestCase):
 
         result = self.my_system.color_figures(self.image, coord)
         self.assertTrue(isinstance(result, np.ndarray))
-        # with self.assertRaises(TypeError):
-        #    self.my_system.color_figures(self.image, coord)
-
-    # def test_save_image(self):
-    #     self.assertTrue(os.path.exists(self.path))
-    #     with self.assertRaises(TypeError):
-    #          self.my_system.save_image(self.image, self.path)
 
 
 if __name__ == '__main__':
