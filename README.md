@@ -30,21 +30,23 @@ Parte de la solución a implementar consiste en detectar los nodos o grietas que
 ![](https://github.com/ariano-m/AIVA_2024_MADERAS/blob/main/dataset/MuestrasMaderas/25.png)
 
 ## Despliegue <a name="id3"></a>
+### Requisitos
+- Python 3.10
+- Control de versiones git
+
 ### Preparación del entorno
+Clonar el repositorio:
+
 ```
 git clone https://github.com/ariano-m/AIVA_2024_MADERAS.git
 cd AIVA_2024_MADERAS
 ```
-### Instalar requisitos
 
-- Se ha de disponer de Python 3.10.
-- Un listado de las librerías utilizadas y de sus versiones se puede encontrar en [requirements.txt](https://github.com/ariano-m/AIVA_2024_MADERAS/blob/main/requirements.txt).
-
-Para instalarlas únicamente para este proyecto se puede crear un entorno virtual con el siguiente comando:
+Para instalar las dependencias necesarias únicamente para este proyecto, se puede crear un entorno virtual con el siguiente comando:
 ```
 python -m venv venv
 ```
-Para activar el entorno virtual se a de ejecutar el archivo _activate_.
+Para activar el entorno virtual se ha de ejecutar el archivo _activate_.
 
 En Unix o MacOS, ejecuta:
 ```
@@ -54,11 +56,12 @@ En Windows, ejecuta:
 ```
 venv\Scripts\activate.bat
 ```
-Para instalar los requisitos del proyecto:
+Para instalar las diferentes versiones de las [librerías](https://github.com/ariano-m/AIVA_2024_MADERAS/blob/main/requirements.txt) utilizadas:
+
 ```
 pip install -r requirements.txt
 ```
-Asegurarse de que el directorio actual está en el path de python.
+Para asegurarse de que el directorio actual está en el path de python.
 
 En Unix o MacOS, ejecuta:
 ```
@@ -101,7 +104,7 @@ Para el test_system:
 ```
 python.exe test_system.py ../../../dataset/MuestrasMaderas/10.png
 ```
-Pata el test_model:
+Para el test_model:
 ```
 python test_model.py ../models/Yolo_Training2/weights/best.pt ../../../dataset/MuestrasMaderas/62.png
 ````
