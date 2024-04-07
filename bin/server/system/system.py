@@ -1,5 +1,6 @@
-import cv2
+from typing import Sequence
 import numpy as np
+import cv2
 
 
 class MySystem:
@@ -20,7 +21,7 @@ class MySystem:
         kernel = np.ones((5, 5), np.uint8)
         return cv2.erode(image[:, :, 0], kernel, iterations=3)
 
-    def get_contours(self, image: np.ndarray) -> cv2.typing.Rect:
+    def get_contours(self, image: np.ndarray) -> Sequence:
         """
             Extracts contours from the input image and returns the bounding rectangle.
 
@@ -52,13 +53,13 @@ class MySystem:
         img_bin = self.preprocess_image(image)
         return self.model.inference(img_bin)
 
-    def place_figures(self, image: np.ndarray, bbox_damages: list, black_bbox: cv2.typing.Rect) -> list:
+    def place_figures(self, image: np.ndarray, bbox_damages: list, black_bbox: Sequence) -> list:
         """
             Places figures on the input image while avoiding damaged areas.
 
         :param image: np.ndarray, The input image.
         :param bbox_damages: list, Bounding boxes of damaged areas.
-        :param black_bbox: list, Bounding box of the black area.
+        :param black_bbox: Sequence, Bounding box of the black area.
         :return: A list of bounding boxes of placed figures.
         """
 
