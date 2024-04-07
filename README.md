@@ -38,11 +38,11 @@ cd AIVA_2024_MADERAS
 ### Instalar requisitos
 
 - Se ha de disponer de Python 3.10.
-- Un listado de las librerías utilizadas y de sus versiones se puede encontrar en requirements.txt.
+- Un listado de las librerías utilizadas y de sus versiones se puede encontrar en [requirements.txt](https://github.com/ariano-m/AIVA_2024_MADERAS/blob/main/requirements.txt).
 
 Para instalarlas únicamente para este proyecto se puede crear un entorno virtual con el siguiente comando:
 ```
-python -m venv /path/to/new/virtual/environment
+python -m venv venv
 ```
 Para activar el entorno virtual se a de ejecutar el archivo _activate_.
 
