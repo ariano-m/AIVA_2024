@@ -32,7 +32,7 @@ Parte de la solución a implementar consiste en detectar los nodos o grietas que
 A continuación, se muestra un ejemplo del objetivo:
 <div align="center">
     <img src="https://github.com/ariano-m/AIVA_2024_MADERAS/assets/35432675/1adf935e-fe37-48d6-a50c-75f8982ac808" width="450">
-   <div>Imagen dilatada</div>
+   <div>Detección de imperfecciones</div>
 </div> 
 
 
