@@ -94,7 +94,7 @@ cd bin/server/tests
 ```
 El comando para ejecutar el test sería el siguiente:
 ```
-python.exe <ruta donde se encuentra el test.py> <ruta del modelo (opcional dependiendo del test)> <ruta de la imagen>
+python.exe <ruta donde se encuentra el test.py> <ruta del modelo (opcional)> <ruta de la imagen (opcional)>
 ```
 Un ejemplo, si nos encontramos en la carpeta _system_:
 Para el test_system:
@@ -105,3 +105,7 @@ Pata el test_model:
 ```
 python test_model.py ../models/Yolo_Training2/weights/best.pt ../../../dataset/MuestrasMaderas/62.png
 ````
+Para el test_trainer:
+```
+python test_trainer.py ../models/Yolo_Training2/weights/best.pt
+```
