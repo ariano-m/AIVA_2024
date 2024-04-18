@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  mysql-master:
+    container_name: mysql-visionaryai
+    image: arm64v8/mysql:latest
+    command: --init-file /scripts/script.sql  #--default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./scripts/script.sql:/scripts/script.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: '1234'
+      MYSQL_DATABASE: 'MY_IMAGE'
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: '1234'
+    ports:
+      - 3306:3306
+    restart: 'no'
+
+  visionaryai:
+    container_name: visionaryai
+    build:
+      dockerfile: ./Dockerfile
+    ports:
+      - 5005:5005
+    restart: 'no'
