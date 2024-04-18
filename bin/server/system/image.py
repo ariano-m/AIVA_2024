@@ -47,7 +47,7 @@ class MyImage:
         return self._datetime
 
     @datetime.setter
-    def datetime(self, time_: float):
+    def datetime(self, time_: str):
         self._datetime = time_
 
 
