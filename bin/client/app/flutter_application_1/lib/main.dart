@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'pickerGallery.dart';
+import 'myCamera.dart';
 
 void main() {
   runApp(MyApp());
@@ -109,6 +111,9 @@ class _LoginDemoState extends State<LoginDemo> {
 
 
 class SecondRoute extends StatelessWidget {
+  final my_picker = MyPickerGallery();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,7 +133,12 @@ class SecondRoute extends StatelessWidget {
                 color: Colors.blue,
               ),
               child: Center(
-                child: Text('Capture photo', style: TextStyle(color: Colors.white, fontSize: 24),),
+                child: TextButton(
+                  onPressed: () {
+                    takePhoto();
+                  },
+                  child: Text('Capture photo', style: TextStyle(color: Colors.white, fontSize: 24),),
+                )
               ),
             ),
             
@@ -141,9 +151,11 @@ class SecondRoute extends StatelessWidget {
                 color: Color.fromRGBO(7, 24, 196, 100),
               ),
               child: Center(
-                child: Text(
-                  'Gallery',
-                  style: TextStyle(color: Colors.white, fontSize: 24),
+                child: TextButton(
+                  onPressed: (){
+                    my_picker.getImage();
+                  },
+                  child: Text('Gallery', style: TextStyle(color: Colors.white, fontSize: 24),),
                 ),
               ),
             ),
