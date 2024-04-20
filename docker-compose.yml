@@ -23,3 +23,5 @@ services:
     ports:
       - 5005:5005
     restart: 'no'
+    depends_on:
+      - mysql-master

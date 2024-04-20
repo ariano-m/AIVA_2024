@@ -7,15 +7,16 @@ from model import Model
 import numpy as np
 import datetime
 import base64
+import cv2
 
 # variable for Flask server
 app = Flask(__name__)
 
 
 config = {
-    "host": "127.0.0.1",
+    "host": "mysql-master",  # name service docker
     "port": 3306,
-    "user": "admin",
+    "user": "root",
     "password": "1234",
     "use_pure": True,
     "database": "MY_IMAGE"
@@ -25,6 +26,10 @@ my_system = None
 
 
 def load_system() -> MySystem:
+    """
+        Loads the system with a pre-trained model for image processing.
+    :return: An instance of MySystem initialized with the pre-trained model.
+    """
     save_path = '../models/'
     name = 'Yolo_Training2'
     model_ = Model()
@@ -34,10 +39,14 @@ def load_system() -> MySystem:
 
 @app.route('/image', methods=['POST'])
 def process_petition() -> Response:
-    image = base64.b64decode(request.data)
-    image = np.frombuffer(image, dtype=np.uint8)
-    image = image.reshape(442, 488, 3).astype(np.uint8)
-    print("SHAPE", image.shape)
+    """
+        Processes an image received via POST request, performs image processing, and stores relevant information in the database.
+    :return: A JSON response indicating the successful receipt and processing of the image.
+    """
+
+    image_bytes = base64.b64decode(request.data)
+    nparr = np.frombuffer(image_bytes, np.uint8)
+    image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
     main(image)
 
@@ -49,12 +58,13 @@ def process_petition() -> Response:
 
 def add_row_db(image: MyImage):
     """
-        #docker run --name mysql -e MYSQL_ROOT_PASSWORD=1234 -d arm64v8/mysql:latest
-        #docker exec -it mysql bash -l
-        #mysql -p
-    :param image:
-    :return:
+        Adds information about the processed image to the MySQL database.
+    :param image: An instance of MyImage containing information about the processed image.
+    :return: None
     """
+    #docker run --name mysql -e MYSQL_ROOT_PASSWORD=1234 -d arm64v8/mysql:latest
+    #docker exec -it mysql bash -l
+    #mysql -p
 
     with cpy.connect(**config) as cnx:
         with cnx.cursor() as cursor:
@@ -85,6 +95,11 @@ def add_row_db(image: MyImage):
 
 
 def main(img):
+    """
+        Main function for processing the received image, detecting damages, and storing relevant information in the database.
+    :param img: The image to be processed.
+    :return: None
+    """
     img_bin = my_system.preprocess_image(img)
     erode_img = my_system.morphology(img_bin)
     bbox_board = my_system.get_contours(erode_img)
