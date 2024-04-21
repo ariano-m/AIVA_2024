@@ -1,9 +1,9 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'pickerGallery.dart';
-import 'myCamera.dart';
+import 'dart:typed_data';
 import 'petitions.dart';
+import 'myCamera.dart';
+
 
 
 void main() {
@@ -111,9 +111,6 @@ class _LoginDemoState extends State<LoginDemo> {
 }
 
 
-
-
-
 class SecondRoute extends StatelessWidget {
   final my_picker = MyPickerGallery();
 
@@ -158,8 +155,13 @@ class SecondRoute extends StatelessWidget {
               child: Center(
                 child: TextButton(
                   onPressed: () async {
-                    await my_picker.getImage();
-                    final Uint8List response = await sendImageToServer(my_picker.image);
+                    var response = Uint8List.fromList([]);
+                    try {
+                      await my_picker.getImage();
+                      response = await sendImageToServer(my_picker.image);
+                    } catch(e) {
+                      print("error in sendImageToServer");
+                    }
                     Navigator.push(context, MaterialPageRoute(builder: (_) => Result(image: response,)));
                   },
                   child: Text('Gallery', style: TextStyle(color: Colors.white, fontSize: 24),),
@@ -199,9 +201,11 @@ class Result extends StatelessWidget {
                           scale: 2.5,
                           ),
 
-                          Container(
-                            width: 100, // Adjust size as needed
-                            height: 100, // Adjust size as needed
+                          Padding(
+                          padding: const EdgeInsets.only(left:15.0,right: 15.0,top:100,bottom: 0),
+                          child: Container(
+                            width: 200, // Adjust size as needed
+                            height: 200, // Adjust size as needed
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.lightGreen,
@@ -215,6 +219,7 @@ class Result extends StatelessWidget {
                               )
                             ),
                           ),
+                        ),
                       ],
                     ),
                   ),
@@ -222,4 +227,5 @@ class Result extends StatelessWidget {
           );
       }
 }
+
 

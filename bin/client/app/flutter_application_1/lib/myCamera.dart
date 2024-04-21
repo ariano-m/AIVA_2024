@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'main.dart';
+import 'petitions.dart';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -99,9 +101,20 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             // Attempt to take a picture and get the file `image`
             // where it was saved.
             final image = await _controller.takePicture();
-
+            
             if (!context.mounted) return;
 
+            /*var bytes_ = image.readAsBytes();
+            print(bytes_);
+            var response = await sendImageToServer(bytes_);
+            await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => Result(image: response,),
+              ),
+            );*/            
+            // Navigator.push(context, MaterialPageRoute(builder: (_) => Result(image: response,)));
+
+            
             // If the picture was taken, display it on a new screen.
             await Navigator.of(context).push(
               MaterialPageRoute(
@@ -135,7 +148,51 @@ class DisplayPictureScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Display the Picture')),
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
+      body: Center(
+        child: Column(
+            children: <Widget>[
+                SizedBox(height: 20,),
+                Image.file(File(imagePath)),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.only(left:0,right: 0,top:100,bottom: 0),
+                          child: ElevatedButton(
+                        onPressed: () async {
+                           final File imageFile = File(imagePath);
+                          final List<int> bytes_ = await imageFile.readAsBytes();
+                          var response = await sendImageToServer(bytes_);
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => Result(image: response,)));
+                          // Add functionality for the green button
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                        ),
+                        child: Text('Send Photo'),
+                      ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(left:0,right: 0,top:100,bottom: 0),
+                        child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
+                        child: Text('Take new photo'),
+                      ),
+                      ),
+                    ],
+                  ),
+                )
+                
+            ]
+        )
+      )
     );
   }
 }
