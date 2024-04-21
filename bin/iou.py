@@ -1,10 +1,78 @@
+from sklearn.metrics import RocCurveDisplay, roc_curve, auc, precision_recall_curve
 from INDUSTRIALES.AIVA_2024_MADERAS.bin.server.system.model import Model
 from INDUSTRIALES.AIVA_2024_MADERAS.bin.server.system.system import MySystem
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 import numpy as np
 import cv2 as cv
 import glob
 
+
+def accuracy(tp, tn, fp, fn):
+    try:
+        acc = (tp + tn) / (tp + tn + fp + fn)
+    except ZeroDivisionError:
+        acc = 0
+    return acc
+
+
+def recall(tp, fn):
+    try:
+        rcll = tp / (tp + fn)
+    except ZeroDivisionError:
+        rcll = 0
+    return rcll
+
+
+def precision(tp, fp):
+    try:
+        prc = tp / (tp + fp)
+    except ZeroDivisionError:
+        prc = 0
+    return prc
+
+
+def f1(precision, recall):
+    try:
+        f = 2 * (precision * recall) / (precision + recall)
+    except ZeroDivisionError:
+        f = 0
+    return f
+
+def tasas(TP, TN, FP, FN):
+    FPR = FP / (FP + TN)
+    FNR = FN / (FN + TP)
+    TPR = TP / (TP + FN)
+    TNR = TN / (TN + FP)
+
+    return FPR, FNR, TPR, TNR
+
+def plot_precision_recall_curve(y_true, y_scores):
+    precision, recall, thresholds = precision_recall_curve(y_true, y_scores)
+
+    plt.figure(figsize=(8, 6))
+    plt.plot(recall, precision, color='blue', lw=2, label='Curva Precisión-Recall')
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.title('Curva Precisión-Recall')
+    plt.legend(loc="lower left")
+    plt.grid(True)
+    plt.show()
+
+def plot_roc_curve(y_true, y_scores):
+    fpr, tpr, thresholds = roc_curve(y_true, y_scores)
+
+    plt.figure(figsize=(8, 6))
+    plt.plot(fpr, tpr, color='blue', lw=2, label='Curva ROC')
+    plt.plot([0, 1], [0, 1], color='red', linestyle='--', label='Clasificador aleatorio')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('Tasa de Falsos Positivos (FPR)')
+    plt.ylabel('Tasa de Verdaderos Positivos (TPR)')
+    plt.title('Curva ROC')
+    plt.legend(loc="lower right")
+    plt.grid(True)
+    plt.show()
 
 def bb_intersection_over_union(boxA, boxB) -> float:
     # code from https://pyimagesearch.com/2016/11/07/intersection-over-union-iou-for-object-detection/
@@ -112,6 +180,68 @@ def read_reg_file(file) -> [[]]:
     return results
 
 
+def calc_matrix(test_data):
+    global metrics_history
+    global prob
+    for i in test_data:
+        img = cv.imread(i)
+        bboxes_pred = predict(my_system, img)
+        bboxes_gt = read_reg_file(i.replace('.png', '.reg'))
+
+        for x1, y1, x2, y2 in bboxes_pred:
+            img = cv.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 1)
+
+        for x1, y1, x2, y2 in bboxes_gt:
+            img = cv.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 1)
+
+        # cv.imwrite('./evaluation/' + i.split('/')[-1], img)
+
+        if len(bboxes_gt) == 0:  # False Positive
+            if len(bboxes_pred) != 0:
+                metrics_history['FP'] += len(bboxes_pred)
+                for i in range(len(bboxes_pred)):
+                    prob['true'].append(0)
+                    prob['score'].append(1)
+            continue
+
+        if len(bboxes_pred) == 0:  # False Negative
+            if len(bboxes_gt) != 0:
+                metrics_history['FN'] += len(bboxes_gt)
+                for i in range(len(bboxes_gt)):
+                    prob['true'].append(1)
+                    prob['score'].append(0)
+            continue
+
+        result = [[] for i in range(len(bboxes_gt))]
+        for idx, gt in enumerate(bboxes_gt):
+            for pred in bboxes_pred:
+                r = bb_intersection_over_unionII(gt, pred)
+                result[idx].append(r)
+
+            if max(result[idx]) >= 0.4:
+                metrics_history['TP'] += 1  # Decimos que hay algo, y hay algo
+                prob['true'].append(1)
+                prob['score'].append(1)
+            else:
+                metrics_history['FN'] += 1  # Decimos que no  hay nada, y hay algo
+                prob['true'].append(1)
+                prob['score'].append(0)
+
+        if len(bboxes_pred) > len(bboxes_gt):
+            metrics_history['FP'] += (len(bboxes_pred) - len(bboxes_gt))  # Decimos que hay algo, y no hay nada
+            for i in range((len(bboxes_pred) - len(bboxes_gt))):
+                prob['true'].append(0)
+                prob['score'].append(1)
+
+        if len(bboxes_gt) == 0 and len(bboxes_pred) == 0:
+            metrics_history['TN'] += 1  # Decimos que no hay nada, y no hay nada
+            prob['true'].append(0)
+            prob['score'].append(0)
+
+        print("Imagen ", i, " TP: ", metrics_history['TP'], " TN: ", metrics_history['TN'], " FN: ",
+              metrics_history['FN'], " FP: ", metrics_history['FP'])
+
+
 save_path = './server/models/'
 name = 'Yolo_Training2'
 model_ = Model()
@@ -120,53 +250,34 @@ my_system = MySystem(model_)
 
 _, _, test_data = split_train_val_test('../dataset/MuestrasMaderas/')
 
-metrics_history = {}
-for i in test_data:
-    img = cv.imread(i)
-    bboxes_pred = predict(my_system, img)
-    bboxes_gt = read_reg_file(i.replace('.png', '.reg'))
+metrics_history = {
+    'TP': 0,
+    'FP': 0,
+    'TN': 0,
+    'FN': 0
+}
+prob = { # 0 no hay bbox, 1 hay bbox
+    'true': [],
+    'score': []
+}
 
-    print(i)
-    print(bboxes_pred)
-    print(bboxes_gt)
+calc_matrix(test_data)
 
-    for x1, y1, x2, y2 in  bboxes_pred:
-        img = cv.rectangle(img, (x1, y1), (x2, y2), (0,0,255), 1)
+result = {'tp': metrics_history['TP'], 'fn': metrics_history['FN'],
+          'fp': metrics_history['FP'], 'tn': metrics_history['TN'],
+          'accuracy': accuracy(metrics_history['TP'], metrics_history['TN'], metrics_history['FP'], metrics_history['FN']),
+          'precision': precision(metrics_history['TP'], metrics_history['FP']),
+          'recall': recall(metrics_history['TP'], metrics_history['FN'])}
 
-    for x1, y1, x2, y2 in  bboxes_gt:
-        img = cv.rectangle(img, (x1, y1), (x2, y2), (0,255,0), 1)
-
-    cv.imwrite('./evaluation/' + i.split('/')[-1], img)
-
-    if len(bboxes_gt) == 0:
-        metrics_history[i] = []
-        continue
-
-    result = [[] for i in range(len(bboxes_gt))]
-    for idx, gt in enumerate(bboxes_gt):
-        for pred in bboxes_pred:
-            r = bb_intersection_over_unionII(gt, pred)
-            result[idx].append(r)
-
-    metrics = [max(r) >= 0.5 for r in result]
-
-    metrics_history[i] = metrics
-    for r in result:
-        print(r)
-    print(metrics)
+result['f1'] = f1(result['precision'], result['recall'])
+FPR, FNR, TPR, TNR = tasas(metrics_history['TP'], metrics_history['TN'], metrics_history['FP'], metrics_history['FN'])
+result['FPR'] = FPR
+result['FNR'] = FNR
+result['TPR'] = TPR
+result['TNR'] = TNR
 
 
-total = []
-for i, j in metrics_history.items():
-    total.extend(j)
-    print(i, j)
-
-print(total.count(False))
-print(total.count(True))
-
-a = (225, 254, 253, 296)
-b = [227, 255, 251, 287]
-
-a = (339, 256, 356, 280)
-b = [343, 259, 355, 275]
-print(bb_intersection_over_union(b, a))
+print(result)
+print(prob)
+plot_roc_curve(prob['true'], prob['score'])
+plot_precision_recall_curve(prob['true'], prob['score'])
