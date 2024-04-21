@@ -1,6 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'pickerGallery.dart';
 import 'myCamera.dart';
+import 'petitions.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -134,8 +138,9 @@ class SecondRoute extends StatelessWidget {
               ),
               child: Center(
                 child: TextButton(
-                  onPressed: () {
-                    takePhoto();
+                  onPressed: () async {
+                    await takePhoto();
+                    await sendImageToServer(my_picker.image);
                   },
                   child: Text('Capture photo', style: TextStyle(color: Colors.white, fontSize: 24),),
                 )
@@ -152,8 +157,10 @@ class SecondRoute extends StatelessWidget {
               ),
               child: Center(
                 child: TextButton(
-                  onPressed: (){
-                    my_picker.getImage();
+                  onPressed: () async {
+                    await my_picker.getImage();
+                    final Uint8List response = await sendImageToServer(my_picker.image);
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => Result(image: response,)));
                   },
                   child: Text('Gallery', style: TextStyle(color: Colors.white, fontSize: 24),),
                 ),
@@ -166,3 +173,53 @@ class SecondRoute extends StatelessWidget {
     );
   }
 }
+
+
+
+class Result extends StatelessWidget {
+  final Uint8List image;
+
+  Result({required this.image});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+    home: Scaffold(
+              appBar: AppBar(
+                  title: const Text(
+                      'Result',
+                  ),
+              ),
+              body: Center(
+                  child: Column(
+                      children: <Widget>[
+                          SizedBox(height: 20,),
+                          Image.memory(this.image,
+                          height: 200,
+                          scale: 2.5,
+                          ),
+
+                          Container(
+                            width: 100, // Adjust size as needed
+                            height: 100, // Adjust size as needed
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.lightGreen,
+                            ),
+                            child: Center(
+                              child: TextButton(
+                                onPressed: () async {
+                                    Navigator.push(context, MaterialPageRoute(builder: (_) => SecondRoute())); //move to other screen
+                                },
+                                child: Text('Finish', style: TextStyle(color: Colors.white, fontSize: 24),),
+                              )
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+              ),
+          );
+      }
+}
+
