@@ -8,7 +8,11 @@ import 'package:flutter/material.dart';
 
 //https://docs.flutter.dev/cookbook/plugins/picture-using-camera
 
-Future<void> takePhoto() async {
+String IP = "";
+
+Future<void> takePhoto(String ip) async {
+  IP = ip;
+
   // Ensure that plugin services are initialized so that `availableCameras()`
   // can be called before `runApp()`
   WidgetsFlutterBinding.ensureInitialized();
@@ -103,17 +107,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             final image = await _controller.takePicture();
             
             if (!context.mounted) return;
-
-            /*var bytes_ = image.readAsBytes();
-            print(bytes_);
-            var response = await sendImageToServer(bytes_);
-            await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => Result(image: response,),
-              ),
-            );*/            
-            // Navigator.push(context, MaterialPageRoute(builder: (_) => Result(image: response,)));
-
             
             // If the picture was taken, display it on a new screen.
             await Navigator.of(context).push(
@@ -158,14 +151,13 @@ class DisplayPictureScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Padding(
-                          padding: const EdgeInsets.only(left:0,right: 0,top:100,bottom: 0),
-                          child: ElevatedButton(
+                        padding: const EdgeInsets.only(left:0,right: 0,top:100,bottom: 0),
+                        child: ElevatedButton(
                         onPressed: () async {
-                           final File imageFile = File(imagePath);
+                          final File imageFile = File(imagePath);
                           final List<int> bytes_ = await imageFile.readAsBytes();
-                          var response = await sendImageToServer(bytes_);
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => Result(image: response,)));
-                          // Add functionality for the green button
+                          var response = await sendImageToServer(bytes_, IP);
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => Result(image: response)));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,

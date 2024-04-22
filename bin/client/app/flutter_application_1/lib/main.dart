@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'pickerGallery.dart';
 import 'dart:typed_data';
 import 'petitions.dart';
-import 'myCamera.dart';
+import 'myCamera.dart' as myCamera;
 
-
+String IP = "http://10.0.2.2:5005/image";
 
 void main() {
   runApp(MyApp());
@@ -26,6 +26,14 @@ class LoginDemo extends StatefulWidget {
 }
 
 class _LoginDemoState extends State<LoginDemo> {
+  TextEditingController userController = TextEditingController();  
+  TextEditingController passwordController = TextEditingController();  
+  TextEditingController ipController = TextEditingController();  
+
+  var _userError = null;
+  var _passwordError = null;
+  var _ipError = null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,10 +59,12 @@ class _LoginDemoState extends State<LoginDemo> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
+                controller: ipController,
                 decoration: InputDecoration(
+                    errorText: this._ipError,
                     border: OutlineInputBorder(),
                     labelText: 'IP',
-                    hintText: 'Enter valid IP vision system'),
+                    hintText: 'Enter valid IP like http://localhost:5005'),
               ),
             ),
 
@@ -62,8 +72,10 @@ class _LoginDemoState extends State<LoginDemo> {
             Padding(
               padding: const EdgeInsets.only(left:15.0,right: 15.0,top:15,bottom: 0),
               child: TextField(
+                controller: userController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
+                    errorText: this._userError,
                     labelText: 'User',
                     hintText: 'Enter valid username'),
               ),
@@ -72,9 +84,11 @@ class _LoginDemoState extends State<LoginDemo> {
             Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
+                controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
+                    errorText: this._passwordError,
                     labelText: 'Password',
                     hintText: 'Enter secure password'),
               ),
@@ -95,8 +109,39 @@ class _LoginDemoState extends State<LoginDemo> {
               decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
                 onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => SecondRoute())); //move to other screen
-                  },
+                  if (this.ipController.text.isEmpty) {
+                    setState(() {
+                      this._ipError = 'Please enter your ip';
+                    });
+                  } else {
+                    this._ipError = null;
+                  }
+
+                  if (this.userController.text.isEmpty) {
+                    setState(() {
+                      this._userError = 'Please enter your user';
+                    });
+                  } else {
+                    this._userError = null;
+                  }
+
+
+                  if (this.passwordController.text.isEmpty) {
+                    setState(() {
+                      this._passwordError = 'Please enter your password';
+                    });
+                  } else {
+                    this._passwordError = null;
+                  }
+
+
+                  if (this.userController.text == 'user1234' &&
+                      this.passwordController.text == '1234'){
+                      myCamera.IP = this.ipController.text + '/image';
+                      IP = this.ipController.text + '/image';
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => SecondRoute())); //move to other screen
+                  } 
+                },
                 child: Text('Login', style: TextStyle(color: Colors.white, fontSize: 25),),
               ),
             ),
@@ -114,6 +159,7 @@ class _LoginDemoState extends State<LoginDemo> {
 class SecondRoute extends StatelessWidget {
   final my_picker = MyPickerGallery();
 
+  SecondRoute();
 
   @override
   Widget build(BuildContext context) {
@@ -136,8 +182,8 @@ class SecondRoute extends StatelessWidget {
               child: Center(
                 child: TextButton(
                   onPressed: () async {
-                    await takePhoto();
-                    await sendImageToServer(my_picker.image);
+                    await myCamera.takePhoto(IP);
+                    await sendImageToServer(my_picker.image, IP);
                   },
                   child: Text('Capture photo', style: TextStyle(color: Colors.white, fontSize: 24),),
                 )
@@ -158,7 +204,7 @@ class SecondRoute extends StatelessWidget {
                     var response = Uint8List.fromList([]);
                     try {
                       await my_picker.getImage();
-                      response = await sendImageToServer(my_picker.image);
+                      response = await sendImageToServer(my_picker.image, IP);
                     } catch(e) {
                       print("error in sendImageToServer");
                     }

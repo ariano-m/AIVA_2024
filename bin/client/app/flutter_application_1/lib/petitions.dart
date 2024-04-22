@@ -4,7 +4,7 @@ import 'dart:convert';
 //import 'package:image/image.dart';
 //import 'dart:io';
 
-Future<Uint8List> sendImageToServer(img) async {
+Future<Uint8List> sendImageToServer(img, ip) async {
   // final String path = '/Users/arm/PycharmProjects/MUVA/INDUSTRIALES/AIVA_2024_MADERAS/dataset/MuestrasMaderas/01.png';
   // final File imageFile = File(path);
   // final List<int> bytes = await imageFile.readAsBytes();
@@ -17,7 +17,7 @@ Future<Uint8List> sendImageToServer(img) async {
   Uint8List output;
 
   final String base64Image = base64Encode(img);
-  final String url = 'http://10.0.2.2:5005/image';
+  final String url = ip;//'http://10.0.2.2:5005/image';
   final Map<String, String> headers = {'content-type': 'application/octet-stream'};
 
   final http.Response response = await http.post(
