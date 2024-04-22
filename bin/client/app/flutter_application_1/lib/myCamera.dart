@@ -145,8 +145,9 @@ class DisplayPictureScreen extends StatelessWidget {
         child: Column(
             children: <Widget>[
                 SizedBox(height: 20,),
-                Image.file(File(imagePath)),
+                Image.file(File(imagePath), height: 300,),
                 Center(
+                  child: SingleChildScrollView(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -181,7 +182,7 @@ class DisplayPictureScreen extends StatelessWidget {
                     ],
                   ),
                 )
-                
+              )  
             ]
         )
       )

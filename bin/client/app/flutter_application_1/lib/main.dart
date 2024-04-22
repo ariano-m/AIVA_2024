@@ -1,8 +1,10 @@
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'pickerGallery.dart';
 import 'dart:typed_data';
 import 'petitions.dart';
 import 'myCamera.dart' as myCamera;
+import 'dart:io';
 
 String IP = "http://10.0.2.2:5005/image";
 
@@ -205,10 +207,11 @@ class SecondRoute extends StatelessWidget {
                     try {
                       await my_picker.getImage();
                       response = await sendImageToServer(my_picker.image, IP);
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => Result(image: response,)));
                     } catch(e) {
                       print("error in sendImageToServer");
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => SecondRoute()));
                     }
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => Result(image: response,)));
                   },
                   child: Text('Gallery', style: TextStyle(color: Colors.white, fontSize: 24),),
                 ),
@@ -249,23 +252,36 @@ class Result extends StatelessWidget {
 
                           Padding(
                           padding: const EdgeInsets.only(left:15.0,right: 15.0,top:100,bottom: 0),
-                          child: Container(
+                          /*child: Container(
                             width: 200, // Adjust size as needed
                             height: 200, // Adjust size as needed
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.lightGreen,
-                            ),
+                            ),*/
                             child: Center(
-                              child: TextButton(
+                              child: ElevatedButton(
                                 onPressed: () async {
-                                    Navigator.push(context, MaterialPageRoute(builder: (_) => SecondRoute())); //move to other screen
+                                  //final downloadsDirectory = await getDownloadsDirectory();
+                                  String downloadsPath = '/storage/emulated/0/Download';
+                                  DateTime _now = DateTime.now();
+                                  final String name_image = 'maderas_${_now.hour}${_now.minute}${_now.second}${_now.millisecond}.png';
+                                  File file = File(downloadsPath + '/' + name_image);
+                                  var newFile = await file.writeAsBytes(image);
+                                  await newFile.create();
+                                  //File(downloadsPath + '/' + name_image).writeAsBytes(image);
+                                  Navigator.push(context, MaterialPageRoute(builder: (_) => SecondRoute())); //move to other screen
                                 },
                                 child: Text('Finish', style: TextStyle(color: Colors.white, fontSize: 24),),
+                                style: ElevatedButton.styleFrom(
+                                  shape: CircleBorder(),
+                                  padding: EdgeInsets.all(100),
+                                  backgroundColor: Colors.green, // <-- Button color
+                                  foregroundColor: Colors.greenAccent, // <-- Splash color
+                                ),
                               )
                             ),
                           ),
-                        ),
                       ],
                     ),
                   ),
