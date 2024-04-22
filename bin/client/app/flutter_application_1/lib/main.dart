@@ -185,7 +185,7 @@ class SecondRoute extends StatelessWidget {
                 child: TextButton(
                   onPressed: () async {
                     await myCamera.takePhoto(IP);
-                    await sendImageToServer(my_picker.image, IP);
+                    //await sendImageToServer(my_picker.image, IP);
                   },
                   child: Text('Capture photo', style: TextStyle(color: Colors.white, fontSize: 24),),
                 )
