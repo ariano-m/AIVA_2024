@@ -1,15 +1,9 @@
-import 'dart:typed_data';
 import 'package:http/http.dart' as http;
+import 'dart:typed_data';
 import 'dart:convert';
-//import 'package:image/image.dart';
-//import 'dart:io';
 
+/// Send an [img] to specific [ip] belongs to visual system
 Future<Uint8List> sendImageToServer(img, ip) async {
-  // final String path = '/Users/arm/PycharmProjects/MUVA/INDUSTRIALES/AIVA_2024_MADERAS/dataset/MuestrasMaderas/01.png';
-  // final File imageFile = File(path);
-  // final List<int> bytes = await imageFile.readAsBytes();
-  // print(await imageFile.length());
-
   if (img == null) {
     return Uint8List.fromList([]);
   }

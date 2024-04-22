@@ -1,15 +1,16 @@
-import 'dart:async';
-import 'dart:io';
-import 'main.dart';
-import 'petitions.dart';
-
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
+import 'petitions.dart';
+import 'dart:async';
+import 'main.dart';
+import 'dart:io';
 
-//https://docs.flutter.dev/cookbook/plugins/picture-using-camera
+
+/// Part of this code is from https://docs.flutter.dev/cookbook/plugins/picture-using-camera
 
 String IP = "";
 
+/// function for taking a photo giving a [ip] and sending to visual system
 Future<void> takePhoto(String ip) async {
   IP = ip;
 
@@ -129,7 +130,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   }
 }
 
-// A widget that displays the picture taken by the user.
+/// A widget that displays the picture taken by the user.
 class DisplayPictureScreen extends StatelessWidget {
   final String imagePath;
 
@@ -151,6 +152,8 @@ class DisplayPictureScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+
+                      /// button for sending a photo to server
                       Padding(
                         padding: const EdgeInsets.only(left:0,right: 0,top:100,bottom: 0),
                         child: ElevatedButton(
@@ -167,6 +170,7 @@ class DisplayPictureScreen extends StatelessWidget {
                       ),
                       ),
 
+                      /// botton for backing and taking an another photo
                       Padding(
                         padding: const EdgeInsets.only(left:0,right: 0,top:100,bottom: 0),
                         child: ElevatedButton(

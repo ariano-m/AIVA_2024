@@ -1,4 +1,3 @@
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'pickerGallery.dart';
 import 'dart:typed_data';
@@ -27,6 +26,7 @@ class LoginDemo extends StatefulWidget {
   _LoginDemoState createState() => _LoginDemoState();
 }
 
+/// Class with init screen. It is a loging screen
 class _LoginDemoState extends State<LoginDemo> {
   TextEditingController userController = TextEditingController();  
   TextEditingController passwordController = TextEditingController();  
@@ -47,6 +47,7 @@ class _LoginDemoState extends State<LoginDemo> {
         child: Column(
           children: <Widget>[
             
+            /// input text for ip
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: Center(
@@ -70,7 +71,7 @@ class _LoginDemoState extends State<LoginDemo> {
               ),
             ),
 
-            
+            /// input text for username            
             Padding(
               padding: const EdgeInsets.only(left:15.0,right: 15.0,top:15,bottom: 0),
               child: TextField(
@@ -83,6 +84,7 @@ class _LoginDemoState extends State<LoginDemo> {
               ),
             ),
 
+            /// input text for password
             Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
@@ -105,12 +107,14 @@ class _LoginDemoState extends State<LoginDemo> {
             ),
 
 
+            /// Container for submitting form
             Container(
               height: 50,
               width: 250,
               decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
                 onPressed: () {
+                  
                   if (this.ipController.text.isEmpty) {
                     setState(() {
                       this._ipError = 'Please enter your ip';
@@ -157,7 +161,7 @@ class _LoginDemoState extends State<LoginDemo> {
   }
 }
 
-
+/// Class for showing different actions like picking image from gallery or taking a photo
 class SecondRoute extends StatelessWidget {
   final my_picker = MyPickerGallery();
 
@@ -174,6 +178,8 @@ class SecondRoute extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            
+            /// Container for accessing to camera
             Container(
               width: 200, // Adjust size as needed
               height: 200, // Adjust size as needed
@@ -185,7 +191,6 @@ class SecondRoute extends StatelessWidget {
                 child: TextButton(
                   onPressed: () async {
                     await myCamera.takePhoto(IP);
-                    //await sendImageToServer(my_picker.image, IP);
                   },
                   child: Text('Capture photo', style: TextStyle(color: Colors.white, fontSize: 24),),
                 )
@@ -193,6 +198,8 @@ class SecondRoute extends StatelessWidget {
             ),
             
             SizedBox(height: 60), // Adjust spacing between circles
+            
+            /// Container for accessing the gallery
             Container(
               width: 200, // Adjust size as needed
               height: 200, // Adjust size as needed
@@ -226,7 +233,7 @@ class SecondRoute extends StatelessWidget {
 }
 
 
-
+/// class for showing a processed image by visual system
 class Result extends StatelessWidget {
   final Uint8List image;
 
@@ -252,13 +259,6 @@ class Result extends StatelessWidget {
 
                           Padding(
                           padding: const EdgeInsets.only(left:15.0,right: 15.0,top:100,bottom: 0),
-                          /*child: Container(
-                            width: 200, // Adjust size as needed
-                            height: 200, // Adjust size as needed
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.lightGreen,
-                            ),*/
                             child: Center(
                               child: ElevatedButton(
                                 onPressed: () async {
