@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 
 config = {
-    "host": "mysql-master",  # name service docker
+    "host": "mysql-master", #mysql-master",  # name service docker
     "port": 3306,
     "user": "root",
     "password": "1234",
@@ -48,11 +48,13 @@ def process_petition() -> Response:
     nparr = np.frombuffer(image_bytes, np.uint8)
     image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-    main(image)
+    image_figures = main(image)
 
-    response = {'message': 'image received. size={}x{}'.format(image.shape[1], image.shape[0])}
-    response = make_response(jsonify(response))
-    response.headers["Content-Type"] = "application/json"
+    _, buffer = cv2.imencode('.png', image_figures)
+    base64_image_figures = base64.b64encode(buffer).decode('utf-8')
+
+    response = make_response(base64_image_figures)
+    response.headers.set('Content-Type', 'application/octet-stream')
     return response
 
 
@@ -116,6 +118,7 @@ def main(img):
     my_image.datetime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     add_row_db(my_image)
+    return image
 
 
 if __name__ == "__main__":
