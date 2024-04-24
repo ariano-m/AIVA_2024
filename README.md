@@ -8,6 +8,7 @@ Desarrolladores de VisionaryAI:
 1. [Introducción](#id1)
 2. [Dataset](#id2)
 3. [Despliegue](#id3)
+4. [Sistema en funcionamiento](#id4)
 
 
 ## Introducción <a name="id1"></a>
@@ -68,3 +69,6 @@ La aplicación se entrega al cliente como un archivo APK que los empleados puede
 ```
 /bin/client/app/flutter_application_1/build/app/outputs/flutter-apk/
 ```
+## Sistema en funcionamiento <a name="id4"></a>
+En el siguiente [enlace](https://youtube.com/shorts/JVYHZ3T1KfA?feature=share) se puede ver una demo del funcionamiento del sistema completo.
+También puede servir como guía de la apliación para los empleados.
