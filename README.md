@@ -64,8 +64,7 @@ docker run -d --name visionaryai -p 5005:5005 -p 3306:3306 wariano/maderas_visio
 
 
 ### Aplicación móvil
-La aplicación se entrega al cliente como un archivo APK que los empleados pueden instalar en sus dispositivos móviles. 
+La aplicación se entrega al cliente como un archivo APK que los empleados pueden instalar en sus dispositivos móviles. Por tanto, con copiar la aplicación al dispositivo móvil e iniciando la APK, se instalará.
 ```
 /bin/client/app/flutter_application_1/build/app/outputs/flutter-apk/
 ```
-Al acceder a la aplicación, se les pedirá un inicio de sesión para asegurar un seguimiento adecuado de los movimientos de cada empleado y garantizar el no repudio. Una vez iniciada la sesión, los usuarios verán una pantalla con dos opciones: tomar una foto con la cámara o cargar una desde la galería. 
