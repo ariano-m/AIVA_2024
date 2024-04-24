@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.6
   mysql_client: ^0.0.27
   camera: ^0.10.5+9
+  image_picker: ^1.1.0
+  image: ^4.1.7
+  path_provider: ^2.1.3
 
 dev_dependencies:
   flutter_test:
