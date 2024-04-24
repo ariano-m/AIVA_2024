@@ -40,6 +40,8 @@ A continuación, se muestra un ejemplo del objetivo:
 ### Requisitos
 - Python 3.10
 - Control de versiones git
+- Docker \& Docker-compose
+- Teléfono Android o IOS
 
 ### Preparación del entorno
 Clonar el repositorio:
@@ -48,72 +50,22 @@ Clonar el repositorio:
 git clone https://github.com/ariano-m/AIVA_2024_MADERAS.git
 cd AIVA_2024_MADERAS
 ```
-
-Para instalar las dependencias necesarias únicamente para este proyecto, se puede crear un entorno virtual con el siguiente comando:
+### Despliegue del Docker
+A continuación, se realiza una llamada a docker-compose para crear los diferentes servicios que contiene el proyecto:
 ```
-python -m venv venv
+docker-compose up -d
 ```
-Para activar el entorno virtual se ha de ejecutar el archivo _activate_.
-
-En Unix o MacOS, ejecuta:
+También se puede desplegar usando la imagen alojada en DockerHub:
 ```
-source venv/bin/activate
-```
-En Windows, ejecuta:
-```
-venv\Scripts\activate.bat
-```
-Para instalar las diferentes versiones de las [librerías](https://github.com/ariano-m/AIVA_2024_MADERAS/blob/main/requirements.txt) utilizadas:
-
-```
-pip install -r requirements.txt
-```
-Para asegurarse de que el directorio actual está en el path de python.
-
-En Unix o MacOS, ejecuta:
-```
-export PYTHONPATH="${PYTHONPATH}:/my/other/path"
-export PYTHONPATH=$PYTHONPATH:'pwd'
-```
-En Windows, ejecuta:
-```
-set PYTHONPATH=%PYTHONPATH%;C:\My_python_lib
+docker pull wariano/maderas_visionaryai:init
+docker image ls  # show our image downloaded
+docker run -d --name visionaryai -p 5005:5005 -p 3306:3306 wariano/maderas_visionaryai
 ```
 
-### Lanzar programa
-Primero se ha de estar en la carpeta del proyecto donde se situa main.py. En este caso, se encuentra en _AIVA_2024_MADERAS/bin/server/system/main.py_.
-```
-cd bin/server/system/
-```
-El comando para ejecutar el sistema y que este nos devuelva una imagen con las piezas colocadas sería el siguiente:
-```
-python <ruta donde se encuentra el main.py> --img_path <ruta de la imagen>
-```
-Un ejemplo, si nos encontramos en la carpeta _system_:
-```
-python main.py --img_path ../../../dataset/MuestrasMaderas/10.png
-```
 
-### Lanzar test
-Al igual que la anterior vez, se ha de ir a la carpeta donde se encuentran los test. En este caso es _AIVA_2024_MADERAS/bin/server/tests_.
+### Aplicación móvil
+La aplicación se entrega al cliente como un archivo APK que los empleados pueden instalar en sus dispositivos móviles. 
 ```
-cd bin/server/tests
+/bin/client/app/flutter_application_1/build/app/outputs/flutter-apk/
 ```
-El comando para ejecutar el test sería el siguiente:
-```
-python <ruta donde se encuentra el test.py> <ruta del modelo (opcional)> <ruta de la imagen (opcional)>
-```
-A continuación, se muestra un ejemplo de ejecución para casa test.
-
-**test_system**:
-```
-python test_system.py ../../../dataset/MuestrasMaderas/10.png
-```
-**test_model**:
-```
-python test_model.py ../models/Yolo_Training2/weights/best.pt ../../../dataset/MuestrasMaderas/62.png
-````
-**test_trainer**:
-```
-python test_trainer.py ../models/Yolo_Training2/weights/best.pt
-```
+Al acceder a la aplicación, se les pedirá un inicio de sesión para asegurar un seguimiento adecuado de los movimientos de cada empleado y garantizar el no repudio. Una vez iniciada la sesión, los usuarios verán una pantalla con dos opciones: tomar una foto con la cámara o cargar una desde la galería. 
